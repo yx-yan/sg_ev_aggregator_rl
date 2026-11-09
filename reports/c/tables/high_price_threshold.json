@@ -1,0 +1,5 @@
+{
+  "level_regime": "weekly median USEP above P90 of training-split weekly medians",
+  "level_threshold_s_per_mwh": 112.6,
+  "spike_regime": "share of half-hours above 500 S$/MWh >= 2%"
+}
