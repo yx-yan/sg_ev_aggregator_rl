@@ -15,7 +15,7 @@
 | 3 | Li, Sun, Chen, Ye, Low, Wierman, *Learning-Based Predictive Control via Real-Time Aggregate Flexibility*, IEEE TSG 2021, [10.1109/TSG.2021.3094719](https://doi.org/10.1109/TSG.2021.3094719)（[arXiv](https://arxiv.org/abs/2012.11261)） | 聚合商向系统运营商报告总灵活性 | SAC 学习灵活性信号；分配到单车用**固定规则**（LLF 等） | MPC、离线最优 | ACN-Data Caltech；**按时间顺序**：训练 2018-11-01 至 2019-12-01，测试 2019-12-02 至 2020-01-01；CAISO LMP | 未核实 |
 | 4 | Kwon & Zhu, *Efficient Representation for EV Charging Station Operations using RL*, arXiv 2021/2022（[2108.03236](https://arxiv.org/abs/2108.03236)） | 单个充电站降低电费 | **只决定总充电功率，用 LLF 分给单车**；状态按 laxity 分组 | 另一种 LLF 降维方法（Wang et al.） | UC Davis 充电站 2019、ERCOT 电价；20 天训练 / 5 天测试 | 未提及 |
 | 5 | Sales-Ortiz et al., *Efficient Trading of Aggregate Bidirectional EV Charging Flexibility with RL*, ACM e-Energy 2024, [10.1145/3632775.3661949](https://doi.org/10.1145/3632775.3661949) | 虚拟电厂在实时市场交易双向（V2G）灵活性 | **聚合 SAC**，动作被限制在保证单车需求可行的范围内；按比例公平分配 | 未核实（ACM 页面无法访问） | ElaadNL 充电记录、实时电价（据代码说明） | [开源](https://github.com/J27avier/EvCharge) |
-| 6 | Xu, Luan, Zhao, Long, *Frequency Regulation Provision by EV Aggregator with Dynamic Balance between User Charging Anxiety and Aggregate Flexibility*（[利物浦大学录用稿](https://livrepository.liverpool.ac.uk/3192939/)，期刊未核实） | 聚合商参与**调频**（PJM RegD），兼顾车主"电量焦虑" | 有界 PPO（BPPO），联合决定投标量和分配权重 | 固定权重、只顾焦虑、只顾灵活性、**LLF**、**EDF**（投标都用 BPPO） | ACN-Data Caltech 2019；PJM 电价和 RegD 信号 2023-12 至 2024-12；**随机抽 73 天（20%）做测试**，四季均衡 | 未提及 |
+| 6 | Xu, Luan, Zhao, Long, *Frequency Regulation Provision by EV Aggregator with Dynamic Balance between User Charging Anxiety and Aggregate Flexibility*, IEEE TSG 2025, [10.1109/TSG.2025.3570439](https://doi.org/10.1109/TSG.2025.3570439)（[作者录用稿](https://livrepository.liverpool.ac.uk/3192939/)） | 聚合商参与**调频**（PJM RegD），兼顾车主"电量焦虑" | 有界 PPO（BPPO），联合决定投标量和分配权重 | 固定权重、只顾焦虑、只顾灵活性、**LLF**、**EDF**（投标都用 BPPO） | ACN-Data Caltech 2019；PJM 电价和 RegD 信号 2023-12 至 2024-12；**随机抽 73 天（20%）做测试**，四季均衡 | 未提及 |
 | 7 | Wan, Li, He, Prokhorov, *Model-Free Real-Time EV Charging Scheduling Based on DRL*, IEEE TSG 2019, [10.1109/TSG.2018.2879572](https://doi.org/10.1109/TSG.2018.2879572) | 单车充放电调度 | DQN + 电价特征提取网络 | 未核实 | 未核实 | 未核实 |
 | 8 | Li, Wan, He, *Constrained EV Charging Scheduling Based on Safe DRL*, IEEE TSG 2020, [10.1109/TSG.2019.2955437](https://doi.org/10.1109/TSG.2019.2955437) | 同上，加约束 | 约束 MDP + 安全 DRL（是否为 CPO 未核实） | 未核实 | 未核实 | 未核实 |
 
@@ -62,6 +62,4 @@
 
 ## 5. 需要原文的论文
 
-开放获取，我可以直接下载：#1、#2、#3、#4、#6。
-
-需要学校权限，请帮忙下载：#5（ACM）、#7、#8（IEEE）。
+2026-11-09 已整理到 `Research/papers/`，按 `作者_年份_主题.pdf` 命名，并建了 `papers/README.md` 索引和 `papers/notes/` 笔记。#2 SustainGym 因网站拦截没有下载到，需要手动下载。
