@@ -1,0 +1,4 @@
+,train,validation,test,real_validation
+residential_19_07,1.2145,1.504,1.2822,0.7408
+destination_09_18,1.0282,1.2571,0.9748,0.6185
+always_plugged_00_24,2.8534,3.7723,2.9519,1.7875

@@ -1,0 +1,7 @@
+,level_regime,level_regime,spike_regime,spike_regime
+,high,normal,normal,spike
+split,,,,
+train,6,46,45,7
+validation,7,6,13,0
+test,22,0,15,7
+real_validation,7,0,0,7
