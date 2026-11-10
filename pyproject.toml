@@ -27,8 +27,12 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 
 [tool.ruff]
-line-length = 110
+line-length = 120
 target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.flake8-bugbear]
+# frozen dataclasses are safe as argument defaults
+extend-immutable-calls = ["sg_ev_rl.market.v2g_roughcalc.Battery"]
