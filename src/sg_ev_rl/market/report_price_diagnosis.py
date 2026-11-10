@@ -71,7 +71,7 @@ def fig_monthly(month_tab: pd.DataFrame, path: Path):
 def fig_hourly(m: pd.DataFrame, path: Path):
     prof = m.groupby(["day_type", "split", "start_hour"])["usep_price"].median()
     fig, axes = plt.subplots(1, 2, figsize=(9, 3.8), sharey=True, facecolor=SURFACE)
-    for ax, day_type in zip(axes, ["weekday", "weekend"]):
+    for ax, day_type in zip(axes, ["weekday", "weekend"], strict=True):
         _style(ax)
         for i, name in enumerate(SPLIT_ORDER):
             s = prof.loc[(day_type, name)]

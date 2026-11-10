@@ -9,7 +9,7 @@ from sg_ev_rl.market.splits import SPLITS, TUNING_CUTOFF, split_of
 
 def test_splits_are_contiguous_and_ordered():
     spans = list(SPLITS.values())
-    for (_, end), (start, _) in zip(spans, spans[1:]):
+    for (_, end), (start, _) in zip(spans, spans[1:], strict=False):
         assert start == end + timedelta(days=1)
 
 

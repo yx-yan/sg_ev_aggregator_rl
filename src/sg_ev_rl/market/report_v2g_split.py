@@ -82,7 +82,7 @@ def feature_shift(m: pd.DataFrame) -> pd.DataFrame:
 
 def fig_v2g(tab: pd.DataFrame, path: Path):
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.6), sharey=True, facecolor=SURFACE)
-    for ax, w in zip(axes, WINDOWS):
+    for ax, w in zip(axes, WINDOWS, strict=True):
         _style(ax)
         for i, sp in enumerate(SPLIT_ORDER):
             s = tab.loc[(w, BASE_EFF, slice(None), sp), "s_per_ev_year_60kwh"]
