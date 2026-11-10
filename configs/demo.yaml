@@ -1,0 +1,5 @@
+# Toy one-day run; prices and sessions are synthetic (see scenarios/toy.py).
+seed: 0
+n_vehicles: 50
+n_periods: 48
+policies: [uncontrolled, cheapest_periods]
