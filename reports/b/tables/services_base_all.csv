@@ -1,0 +1,7 @@
+group,scenario,energy_per_port_day,degradation_per_port_day,regulation_per_port_day,peak_per_port_day,total_per_port_day,saving_vs_s1_per_port_day,weeks
+all,S1_uncontrolled,3.8253,0.0,0.0,0.3238,4.149,0.0,65
+all,S2_smart,3.4813,0.0,0.0,0.3217,3.803,0.3461,65
+all,S3_smart_v2g,3.415,0.021,0.0,0.3219,3.7579,0.3912,65
+all,S4a_smart_regulation,3.5498,0.0,0.2968,0.3312,3.5842,0.5648,65
+all,S4_v2g_regulation,3.4916,0.0056,0.4068,0.3267,3.4171,0.7319,65
+all,S5_v2g_regulation_peak,3.4995,0.0094,0.3961,0.24,3.3528,0.7963,65
