@@ -1,0 +1,43 @@
+{
+  "n_ports": 100,
+  "episode_days": 7,
+  "weeks": 65,
+  "weeks_by_spike_regime": {
+    "normal": 58,
+    "spike": 7
+  },
+  "weeks_by_level_regime": {
+    "normal": 52,
+    "high": 13
+  },
+  "sensitivity_weeks": 21,
+  "peak_window_slots": [
+    31,
+    32,
+    33,
+    34
+  ],
+  "peak_window_sgt": [
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00"
+  ],
+  "base_peak_price_sgd_per_kwh": 0.1,
+  "base_v2g_share": 0.5,
+  "service_config": {
+    "v2g": false,
+    "regulation": false,
+    "peak_price_sgd_per_kwh": 0.0,
+    "peak_slots": [],
+    "eta_charge": 0.92,
+    "eta_discharge": 0.92,
+    "deg_cost_sgd_per_kwh": 0.06,
+    "soc_min": 0.2,
+    "soc_max": 0.95,
+    "activation_ratio": 0.1
+  },
+  "simultaneous_charge_discharge_steps": 0,
+  "lp_solve_s_max": 0.1888997499991092,
+  "sessions_per_week_median": 947
+}

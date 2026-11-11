@@ -1,0 +1,13 @@
+spike_regime,scenario,energy_per_port_day,degradation_per_port_day,regulation_per_port_day,peak_per_port_day,total_per_port_day,saving_vs_s1_per_port_day,weeks
+normal,S1_uncontrolled,3.586,0.0,0.0,0.3213,3.9073,0.0,58
+normal,S2_smart,3.3329,0.0,0.0,0.3194,3.6523,0.255,58
+normal,S3_smart_v2g,3.2976,0.017,0.0,0.3196,3.6341,0.2731,58
+normal,S4a_smart_regulation,3.3985,0.0,0.2838,0.329,3.4436,0.4636,58
+normal,S4_v2g_regulation,3.3686,0.0028,0.3886,0.3244,3.3072,0.6001,58
+normal,S5_v2g_regulation_peak,3.3757,0.0069,0.3776,0.2365,3.2416,0.6656,58
+spike,S1_uncontrolled,5.8079,0.0,0.0,0.3443,6.1523,0.0,7
+spike,S2_smart,4.7107,0.0,0.0,0.341,5.0517,1.1006,7
+spike,S3_smart_v2g,4.3876,0.0541,0.0,0.3416,4.7832,1.369,7
+spike,S4a_smart_regulation,4.8041,0.0,0.4048,0.3495,4.7488,1.4034,7
+spike,S4_v2g_regulation,4.5104,0.0289,0.5569,0.346,4.3284,1.8239,7
+spike,S5_v2g_regulation_peak,4.5252,0.03,0.5501,0.2685,4.2736,1.8787,7
