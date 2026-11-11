@@ -1,0 +1,55 @@
+{
+  "calibration_dates": [
+    "2026-10-26",
+    "2026-11-09"
+  ],
+  "calibration_days": [
+    10,
+    4
+  ],
+  "calibration_sessions": 223668,
+  "check_window": [
+    "2026-09-09",
+    "2026-10-24"
+  ],
+  "ports": {
+    "AC": 10218,
+    "DC": 1660
+  },
+  "sessions_generated": 741368,
+  "sessions_observed": 743494,
+  "occupancy_mae_pct_points": 0.62,
+  "occupancy_max_abs_gap_pct_points": 3.03,
+  "vehicle_assumptions": {
+    "battery_kwh": [
+      50.0,
+      60.0,
+      75.0
+    ],
+    "battery_p": [
+      0.3,
+      0.4,
+      0.3
+    ],
+    "ac_accept_kw": [
+      7.0,
+      11.0
+    ],
+    "ac_accept_p": [
+      0.4,
+      0.6
+    ],
+    "dc_accept_kw": 100.0,
+    "dc_taper": 0.75,
+    "arrival_soc_ac": [
+      0.2,
+      0.7
+    ],
+    "arrival_soc_dc": [
+      0.1,
+      0.5
+    ],
+    "target_soc_ac": 0.9,
+    "target_soc_dc": 0.8
+  }
+}

@@ -18,6 +18,11 @@ def market_table_path() -> Path:
     return datasets_dir() / "interim" / "market_halfhourly.parquet"
 
 
+def ev_charging_dir() -> Path:
+    """Port register, status events and pseudo sessions built from charger snapshots."""
+    return datasets_dir() / "interim" / "ev_charging"
+
+
 def raw_market_dir() -> Path:
     return datasets_dir() / "raw" / "sg_grid_market"
 

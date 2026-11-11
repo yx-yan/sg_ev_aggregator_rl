@@ -35,4 +35,4 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.ruff.lint.flake8-bugbear]
 # frozen dataclasses are safe as argument defaults
-extend-immutable-calls = ["sg_ev_rl.market.v2g_roughcalc.Battery"]
+extend-immutable-calls = ["sg_ev_rl.market.v2g_roughcalc.Battery", "sg_ev_rl.scenarios.public_charging.VehicleAssumptions"]
