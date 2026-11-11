@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from sg_ev_rl.market.features import add_relative_price_features
+from sg_ev_rl.market.features import add_regime_features, add_relative_price_features, profile_forecast
 from sg_ev_rl.market.v2g_roughcalc import Battery, arbitrage_lp
 
 
@@ -60,3 +60,27 @@ def test_arbitrage_respects_power_limit():
     profit, _ = arbitrage_lp(p, b)
     step = b.c_rate_per_h * 0.5
     assert profit == pytest.approx(step * (0.5 - 0.1), rel=1e-6)
+
+
+@pytest.mark.parametrize("t", [400, 700, 998])
+def test_regime_features_do_not_use_future_values(t):
+    base = _prices()
+    perturbed = base.copy()
+    perturbed.loc[t + 1:, "usep_price"] *= 10.0
+    a = add_regime_features(base, "usep_price")
+    b = add_regime_features(perturbed, "usep_price")
+    pd.testing.assert_frame_equal(a.loc[:t].drop(columns="usep_price"), b.loc[:t].drop(columns="usep_price"))
+
+
+def test_regime_features_are_scale_free():
+    base = _prices()
+    a = add_regime_features(base, "usep_price").drop(columns="usep_price")
+    b = add_regime_features(base * 3.0, "usep_price").drop(columns="usep_price")
+    pd.testing.assert_frame_equal(a, b, rtol=1e-9)
+
+
+def test_profile_forecast_repeats_a_daily_cycle():
+    price = pd.Series(np.tile(np.arange(48, dtype=float), 30))
+    fc = profile_forecast(price, horizon=4)
+    t = 48 * 10 + 5  # next 4 steps are slots 6..9
+    assert fc[t] == pytest.approx(7.5)

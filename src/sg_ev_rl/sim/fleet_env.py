@@ -41,6 +41,7 @@ class EnvConfig:
     il_activation_h: float = 0.5  # IL activation an EV must be able to make up (EMA plans 30 min)
     il_activation_prob: float = 0.0  # ASSUMPTION: chance that an IL offer is activated in a step
     action_mode: str = "absolute"  # "absolute": P = u * fleet_kw; "envelope": u spans [E_min, E_max] of the step
+    relative_prices: bool = False  # add scale-free price features (Episode.conres_pct_7d ...) to obs
 
 
 @dataclass
@@ -148,7 +149,7 @@ class FleetEnv(gym.Env):
         """`episodes`: a list of Episode, or a callable rng -> Episode."""
         self.episodes, self.cfg = episodes, cfg
         self.action_space = gym.spaces.Box(-1.0, 1.0, (2,), np.float32)
-        self.observation_space = gym.spaces.Box(-OBS_CLIP, OBS_CLIP, (OBS_DIM,), np.float32)
+        self.observation_space = gym.spaces.Box(-OBS_CLIP, OBS_CLIP, (obs_dim(cfg),), np.float32)
         self.core: FleetCore | None = None
 
     def reset(self, *, seed=None, options=None):
@@ -176,11 +177,20 @@ class FleetEnv(gym.Env):
         penalty = self.cfg.unmet_penalty_sgd_per_kwh * info["unmet_kwh"]
         reward = -(info["cost_sgd"] - info["il_revenue_sgd"] + penalty) / self.cfg.reward_scale_sgd
         terminated = core.done
-        obs = np.zeros(OBS_DIM, np.float32) if terminated else observe(core)
+        obs = np.zeros(obs_dim(self.cfg), np.float32) if terminated else observe(core)
         return obs, float(reward), terminated, False, info
 
 
 OBS_DIM = 6 + 8 + 4 + (len(LAXITY_BINS_H) - 1)
+N_RELATIVE = 5
+
+
+def obs_dim(cfg: EnvConfig) -> int:
+    return OBS_DIM + N_RELATIVE * cfg.relative_prices
+
+
+def _nan_to(x: float, fill: float) -> float:
+    return fill if not np.isfinite(x) else float(x)
 
 
 def observe(core: FleetCore) -> np.ndarray:
@@ -200,4 +210,9 @@ def observe(core: FleetCore) -> np.ndarray:
              env.e_min / scale, env.e_max / scale]
     lax = env.laxity_h[con & np.isfinite(env.laxity_h)]
     hist = np.histogram(lax, LAXITY_BINS_H)[0] / max(con.sum(), 1)
-    return np.clip(np.asarray([*time, *market, *fleet, *hist], np.float32), -OBS_CLIP, OBS_CLIP)
+    rel = []
+    if core.cfg.relative_prices:
+        # scale-free: tells the policy whether a price is high for the recent regime, not in absolute terms
+        rel = [_nan_to(ep.conres_pct_7d[t], 0.5), *(_nan_to(x[t], 1.0) for x in (
+            ep.conres_ratio_7d, ep.conres_fc_ratio, ep.usep_ratio_7d, ep.usep_fc_ratio))]
+    return np.clip(np.asarray([*time, *market, *fleet, *hist, *rel], np.float32), -OBS_CLIP, OBS_CLIP)

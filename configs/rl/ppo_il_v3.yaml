@@ -1,0 +1,29 @@
+# v3: v2 + scale-free price features + per-episode price-level randomisation (fix for the 2026 Q1 reserve-price shift).
+n_ports: 300
+episode_days: 7
+total_timesteps: 3000000
+n_envs: 8
+eval_every_steps: 50000      # summed over all envs
+seeds: [0, 1, 2]
+env:
+  action_mode: envelope
+  reward_scale_sgd: 20.0     # about one step's net cost for 300 ports
+  unmet_penalty_sgd_per_kwh: 1.0
+  il_activation_h: 0.5
+  il_activation_prob: 0.0
+  relative_prices: true
+ppo:
+  learning_rate: 0.0003
+  n_steps: 2048              # per env
+  batch_size: 512
+  n_epochs: 10
+  gamma: 0.995               # 336-step episodes; charging now vs later is a long-horizon trade-off
+  gae_lambda: 0.95
+  ent_coef: 0.0
+  net_arch: [128, 128]
+norm_reward: true
+# log-uniform level multipliers per training episode; ranges about the 5-95% spread of weekly means / year mean
+# within 2025 (USEP 0.75-1.41, CONRESA 0.30-2.15), widened a little; no validation or test data used
+price_scale:
+  usep: [0.7, 1.6]
+  conres: [0.4, 2.5]
