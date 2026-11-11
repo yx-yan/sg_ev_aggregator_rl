@@ -10,11 +10,11 @@ from datetime import date, timedelta
 import numpy as np
 import pandas as pd
 
-from sg_ev_rl.market.features import add_relative_price_features
+from sg_ev_rl.market.features import add_regime_features, add_relative_price_features
 from sg_ev_rl.market.loader import load_market
 from sg_ev_rl.market.splits import SPLITS
 from sg_ev_rl.scenarios import public_charging as pc
-from sg_ev_rl.scenarios.episodes import Episode, build_episode, episode_starts, seed_for
+from sg_ev_rl.scenarios.episodes import Episode, build_episode, episode_starts, scale_prices, seed_for
 from sg_ev_rl.scheduling import fleet_rules as R
 from sg_ev_rl.scheduling.service_lp import ServiceConfig, solve_service_lp
 from sg_ev_rl.settlement.report import settle_episode
@@ -30,19 +30,30 @@ class Context:
 
 def load_context() -> Context:
     market = add_relative_price_features(load_market())
+    for col in ("usep_price", "reserve_price_CONRESA"):
+        market = add_regime_features(market, col)
     sess, ports, snaps = pc.load_calibration_inputs()
     return Context(market, pc.calibrate(sess, ports, snaps), ports)
 
 
-def train_sampler(ctx: Context, n_ports: int, n_days: int, split: str = "train"):
-    """Callable rng -> Episode with a random start day inside `split` and fresh sessions."""
+def train_sampler(ctx: Context, n_ports: int, n_days: int, split: str = "train",
+                  price_scale: dict | None = None):
+    """Callable rng -> Episode with a random start day inside `split` and fresh sessions.
+
+    `price_scale` = {"usep": [lo, hi], "conres": [lo, hi]}: each episode's price level is multiplied by a
+    log-uniform draw from that range, so the policy sees price regimes other than the training year's.
+    """
     lo, hi = SPLITS[split]
     n_starts = (hi - lo).days - n_days + 2
+    ranges = {k: np.log(v) for k, v in (price_scale or {}).items()}
 
     def sample(rng: np.random.Generator) -> Episode:
         start = lo + timedelta(days=int(rng.integers(n_starts)))
-        return build_episode(ctx.profile, ctx.market, start, n_days, n_ports, ctx.ports,
-                             seed=int(rng.integers(2**63)), scenario=f"rl-{split}")
+        ep = build_episode(ctx.profile, ctx.market, start, n_days, n_ports, ctx.ports,
+                           seed=int(rng.integers(2**63)), scenario=f"rl-{split}")
+        if not ranges:
+            return ep
+        return scale_prices(ep, **{k: float(np.exp(rng.uniform(*r))) for k, r in ranges.items()})
 
     return sample
 

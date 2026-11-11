@@ -73,7 +73,7 @@ def main():
 
     ctx = load_context()
     env_cfg = rl_env_config(**cfg["env"])
-    sampler = train_sampler(ctx, cfg["n_ports"], cfg["episode_days"])
+    sampler = train_sampler(ctx, cfg["n_ports"], cfg["episode_days"], price_scale=cfg.get("price_scale"))
     venv = make_vec_env(lambda: FleetEnv(sampler, env_cfg), n_envs=cfg["n_envs"], seed=args.seed)
     if cfg.get("norm_reward"):
         # rewards only: observations stay as built, so evaluation needs no saved statistics

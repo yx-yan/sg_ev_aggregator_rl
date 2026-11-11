@@ -13,7 +13,7 @@ Session fields follow the common sessions interface (reports/b): segment, batter
 soc_arrival, soc_target, p_charge_max_kw, p_discharge_max_kw, charger_type, v2g_capable,
 feasible_at_arrival. Energy is battery side; `need_kwh` is what the episode must deliver.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date
 
 import numpy as np
@@ -44,6 +44,12 @@ class Episode:
     n_ports: int
     fleet_kw: float  # sum of port ratings: scale for actions and observations
     contingency_reserve_price: np.ndarray | None = None  # CONRESA, S$/MWh (load facilities are group A)
+    # regime-free price features (market.features.add_regime_features, no look-ahead): unchanged by scale_prices
+    conres_pct_7d: np.ndarray | None = None
+    conres_ratio_7d: np.ndarray | None = None  # price / trailing 7-day mean
+    conres_fc_ratio: np.ndarray | None = None  # last-week profile forecast of the next 12 h / trailing mean
+    usep_ratio_7d: np.ndarray | None = None
+    usep_fc_ratio: np.ndarray | None = None
 
     @property
     def p_max(self) -> np.ndarray:
@@ -137,10 +143,22 @@ def episode_from_sessions(s: pd.DataFrame, market: pd.DataFrame, start: date, n_
     if "usep_price_pct_336" not in m.columns:
         raise ValueError("market needs add_relative_price_features() first")
     m = m.loc[steps]
+
+    def col(name):
+        return m[name].to_numpy(float) if name in m.columns else None
+
     return Episode(scenario_id, start, n_steps, s, avail, m["usep_price"].to_numpy(float),
                    m["regulation_price"].to_numpy(float), m["demand_gross_mw"].to_numpy(float),
                    m["usep_price_pct_336"].to_numpy(float), steps, n_ports, fleet_kw,
-                   m["reserve_price_CONRESA"].to_numpy(float))
+                   m["reserve_price_CONRESA"].to_numpy(float), col("reserve_price_CONRESA_pct_336"),
+                   col("reserve_price_CONRESA_ratio_mean_336"), col("reserve_price_CONRESA_fc24_ratio"),
+                   col("usep_price_ratio_mean_336"), col("usep_price_fc24_ratio"))
+
+
+def scale_prices(ep: Episode, usep: float = 1.0, conres: float = 1.0) -> Episode:
+    """Same sessions with the USEP and contingency reserve price levels multiplied (domain randomisation).
+    Relative features are unchanged, since a percentile or a ratio to the trailing median is scale-free."""
+    return replace(ep, usep=ep.usep * usep, contingency_reserve_price=ep.contingency_reserve_price * conres)
 
 
 def _fleet_kw(profile: pc.PublicChargingProfile, portfolio) -> float:
