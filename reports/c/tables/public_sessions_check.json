@@ -50,6 +50,7 @@
       0.5
     ],
     "target_soc_ac": 0.9,
-    "target_soc_dc": 0.8
+    "target_soc_dc": 0.8,
+    "eta_charge": 0.92
   }
 }

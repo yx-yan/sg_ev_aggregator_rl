@@ -14,6 +14,7 @@ dependencies = [
     "scipy>=1.12",
     "matplotlib>=3.8",
     "pyyaml>=6",
+    "gymnasium>=1.0",
 ]
 
 [project.optional-dependencies]
@@ -35,4 +36,5 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.ruff.lint.flake8-bugbear]
 # frozen dataclasses are safe as argument defaults
-extend-immutable-calls = ["sg_ev_rl.market.v2g_roughcalc.Battery", "sg_ev_rl.scenarios.public_charging.VehicleAssumptions"]
+extend-immutable-calls = ["sg_ev_rl.market.v2g_roughcalc.Battery", "sg_ev_rl.scenarios.public_charging.VehicleAssumptions",
+                         "sg_ev_rl.sim.fleet_env.EnvConfig"]

@@ -1,4 +1,6 @@
 """Settle a simulation run into KPIs."""
+import numpy as np
+
 from sg_ev_rl.assets.fleet import DT_H
 from sg_ev_rl.sim.simulator import SimResult
 
@@ -12,4 +14,23 @@ def settle(result: SimResult) -> dict[str, float]:
         "avg_price_sgd_mwh": float(cost_sgd / energy_kwh * 1000) if energy_kwh else 0.0,
         "peak_kw": float(result.power_kw.sum(axis=0).max()),
         "unmet_kwh": float(result.remaining_kwh.clip(min=0).sum()),
+    }
+
+
+def settle_episode(core) -> dict[str, float]:
+    """KPIs of a finished FleetCore run (sg_ev_rl.sim.fleet_env)."""
+    log, ep = core.log, core.ep
+    energy = float(np.sum(log.energy_kwh))
+    cost = float(np.sum(log.cost_sgd))
+    days = ep.n_steps / 48
+    return {
+        "energy_kwh": energy,
+        "energy_cost_sgd": cost,
+        "avg_price_sgd_mwh": cost / energy * 1000 if energy else 0.0,
+        "cost_per_port_day_sgd": cost / ep.n_ports / days,
+        "cost_per_session_sgd": cost / max(len(ep.sessions), 1),
+        "peak_kw": float(np.max(log.energy_kwh)) / DT_H,
+        "unmet_kwh": float(np.sum(log.unmet_kwh)),
+        "unmet_share": float(np.sum(log.unmet_kwh)) / max(float(ep.need_kwh.sum()), 1e-9),
+        "sessions": len(ep.sessions),
     }
