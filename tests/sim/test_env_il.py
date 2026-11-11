@@ -63,3 +63,14 @@ def test_gym_reward_includes_il(ep):
     k = settle_episode(env.core)
     assert rev > 0
     assert total == pytest.approx(-(k["energy_cost_sgd"] - k["il_revenue_sgd"]))
+
+
+def test_envelope_action_mode_spans_feasible_band(ep):
+    for u, pick in ((-1.0, "e_min"), (1.0, "e_max")):
+        env = FleetEnv([ep], EnvConfig(action_mode="envelope"))
+        env.reset(seed=0)
+        done = False
+        while not done:
+            _, _, done, _, info = env.step(np.array([u, 0.0], np.float32))
+            assert info["energy_kwh"] == pytest.approx(info[pick], abs=1e-6)
+        assert settle_episode(env.core)["unmet_kwh"] < 1e-6
