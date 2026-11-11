@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Raw data dumps live in the Research workspace, never in this public repo
+/raw/
+*.tar
+*.tar.gz
+*.json.gz

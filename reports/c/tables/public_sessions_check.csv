@@ -1,0 +1,5 @@
+current,day_type,generated_per_port_day,generated_dur_p25_min,generated_dur_p50_min,generated_dur_p75_min,generated_dur_p95_min,generated_energy_mean_kwh,observed_per_port_day,observed_dur_p25_min,observed_dur_p50_min,observed_dur_p75_min,observed_dur_p95_min,observed_energy_mean_kwh,ks_duration
+AC,weekday,1.027,91.054,235.609,582.882,845.456,19.467,1.049,90.0,225.0,575.0,850.0,19.544,0.015
+AC,weekend,1.167,79.679,177.793,501.179,857.347,18.216,1.156,75.0,175.0,490.0,845.0,18.236,0.019
+DC,weekday,3.232,30.285,44.537,61.382,107.215,27.183,3.17,30.0,45.0,60.0,105.0,27.727,0.05
+DC,weekend,2.918,30.014,44.714,61.979,107.915,26.914,2.903,30.0,45.0,60.0,110.0,27.865,0.047

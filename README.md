@@ -22,7 +22,7 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 | USEP price diagnosis and data split | Done |
 | V2G arbitrage and regulation revenue screen | Done |
 | Literature survey of comparable EV aggregator RL papers | Done |
-| Synthetic EV session generator calibrated to Singapore statistics | In progress |
+| Public-charger EV session generator calibrated to 5-minute charger occupancy | Done |
 | MPC / LP baselines | Planned |
 | RL agents with safety layer | Planned |
 | Dispatch service API | Planned |
@@ -32,6 +32,7 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 - **The price regime shifted mid-dataset.** USEP rose from a median of about S$100/MWh in the training period to about S$188/MWh in the test period. The March 2026 step matches EMC's fuel-price explanation; the cause of the spikes from July 2026 is not yet known. Agents therefore use relative price features, and results are reported separately for spike and normal weeks.
 - **V2G arbitrage is thin at training-period prices.** With perfect foresight it is worth roughly S$100–300 per vehicle per year for home or workplace plug-in windows. On more than half of all days it earns nothing, and 10% of days provide most of the profit. Battery degradation cost matters more than round-trip efficiency.
 - **Regulation capacity is the larger revenue stream** (scenario estimate about S$440–550 per vehicle per year), and regulation prices did not follow the energy price rise.
+- **Public charging sessions can be generated from occupancy data alone.** Calibrated on two weeks of 5-minute port status (11,880 public ports) and checked on six other weeks, the generator matches the observed session count within 0.3%, half-hourly occupancy within 0.6 percentage points on average, and plug-in durations with a KS statistic of at most 0.05. Battery size and state of charge are assumptions.
 
 Details, figures and tables are in [`reports/c/`](reports/c/); the write-ups are in Chinese.
 
@@ -42,7 +43,7 @@ The package follows the workflow of a virtual power plant: assets → forecasts 
 | Module | Role |
 | --- | --- |
 | `sg_ev_rl.assets` | EV sessions, chargers, battery degradation |
-| `sg_ev_rl.scenarios` | Session generators and price paths (currently a toy scenario) |
+| `sg_ev_rl.scenarios` | Public-charger session generator calibrated to Singapore occupancy data, toy scenario |
 | `sg_ev_rl.forecast` | Arrival, price and load forecasts |
 | `sg_ev_rl.market` | Singapore wholesale market data and rules (USEP, reserve, regulation) |
 | `sg_ev_rl.scheduling` | Rule-based policies and MPC baselines |
