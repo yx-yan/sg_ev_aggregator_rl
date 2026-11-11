@@ -40,6 +40,7 @@ class EnvConfig:
     dispatch_priority: str = "llf"  # or "ratio", see dispatch.llf
     il_activation_h: float = 0.5  # IL activation an EV must be able to make up (EMA plans 30 min)
     il_activation_prob: float = 0.0  # ASSUMPTION: chance that an IL offer is activated in a step
+    action_mode: str = "absolute"  # "absolute": P = u * fleet_kw; "envelope": u spans [E_min, E_max] of the step
 
 
 @dataclass
@@ -133,8 +134,11 @@ class FleetCore:
 
 
 class FleetEnv(gym.Env):
-    """Aggregate action a = (u, b) in [-1, 1] x [0, 1]; fleet setpoint P = u * fleet_kw (charge only, so
-    u < 0 means "as little as allowed"); b = share of the backable interruptible load that is offered.
+    """Aggregate action a = (u, b) in [-1, 1] x [0, 1]; b = share of the backable interruptible load offered.
+
+    action_mode "absolute": fleet setpoint P = u * fleet_kw, projected onto the envelope (charge only, so
+    u < 0 means "as little as allowed"). "envelope": E = E_min + (u + 1) / 2 * (E_max - E_min), so the whole
+    action range is feasible; used for RL because the feasible band is a few percent of fleet_kw.
     """
 
     metadata = {"render_modes": []}
@@ -160,7 +164,14 @@ class FleetEnv(gym.Env):
     def step(self, action):
         core = self.core
         u = float(np.clip(action[0], -1, 1))
-        info = core.step_energy(max(u, 0.0) * core.ep.fleet_kw * DT_H, float(action[1]))
+        if self.cfg.action_mode == "envelope":
+            env = core.envelope()
+            energy = env.e_min + (u + 1) / 2 * (env.e_max - env.e_min)
+        elif self.cfg.action_mode == "absolute":
+            energy = max(u, 0.0) * core.ep.fleet_kw * DT_H
+        else:
+            raise ValueError(f"unknown action_mode {self.cfg.action_mode!r}")
+        info = core.step_energy(energy, float(action[1]))
         penalty = self.cfg.unmet_penalty_sgd_per_kwh * info["unmet_kwh"]
         reward = -(info["cost_sgd"] - info["il_revenue_sgd"] + penalty) / self.cfg.reward_scale_sgd
         terminated = core.done
