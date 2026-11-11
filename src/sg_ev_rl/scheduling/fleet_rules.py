@@ -43,16 +43,19 @@ class ReplayAggregate:
         return float(self.energy[core.t])
 
 
-def run(ep: Episode, policy, cfg: EnvConfig = EnvConfig()) -> FleetCore:
-    core = FleetCore(ep, cfg)
+def run(ep: Episode, policy, cfg: EnvConfig = EnvConfig(), il_share: float = 0.0, seed: int | None = None
+        ) -> FleetCore:
+    """Run a rule; `il_share` of the backable interruptible load is offered every step."""
+    core = FleetCore(ep, cfg, seed)
     while not core.done:
-        core.step_energy(policy.setpoint(core))
+        core.step_energy(policy.setpoint(core), il_share)
     return core
 
 
-def run_schedule(ep: Episode, schedule: np.ndarray, cfg: EnvConfig = EnvConfig()) -> FleetCore:
-    """Replay a per-EV schedule step by step (limits checked by the core)."""
-    core = FleetCore(ep, cfg)
+def run_schedule(ep: Episode, schedule: np.ndarray, cfg: EnvConfig = EnvConfig(), il_kw: np.ndarray | None = None,
+                 seed: int | None = None) -> FleetCore:
+    """Replay a per-EV schedule (and IL offers) step by step (limits checked by the core)."""
+    core = FleetCore(ep, cfg, seed)
     while not core.done:
-        core.step_schedule(schedule[:, core.t])
+        core.step_schedule(schedule[:, core.t], None if il_kw is None else il_kw[:, core.t])
     return core

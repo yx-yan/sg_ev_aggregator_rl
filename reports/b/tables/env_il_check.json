@@ -1,0 +1,26 @@
+{
+  "n_ports": 100,
+  "episode_days": 7,
+  "episodes": 64,
+  "b2_p_chosen_on_validation_net_cost": "B2_p1_il",
+  "per_ev_replay_max_rel_error": 7.374430819765076e-14,
+  "aggregate_llf_gap_vs_lp_pct": {
+    "mean": 1.852,
+    "median": 1.78,
+    "max": 3.924
+  },
+  "stress_activation_prob": 0.05,
+  "stress_activations_total": 1958,
+  "stress_unmet_kwh_total": 5.9071322820337794e-08,
+  "stress_extra_energy_cost_pct_lp_aggregate": 0.563,
+  "unmet_kwh_all_non_stress": 3.250559348954291e-07,
+  "env_config": {
+    "eta_charge": 0.92,
+    "unmet_penalty_sgd_per_kwh": 1.0,
+    "reward_scale_sgd": 10.0,
+    "safety_layer": true,
+    "dispatch_priority": "llf",
+    "il_activation_h": 0.5,
+    "il_activation_prob": 0.0
+  }
+}

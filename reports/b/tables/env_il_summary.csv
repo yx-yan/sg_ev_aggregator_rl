@@ -1,0 +1,15 @@
+split,policy,episodes,energy_per_port_day,net_per_port_day,saving_vs_b1_per_port_day,il_mw_mean,activations,unmet_kwh
+train,B1_uncontrolled,52,3.6662,3.6662,0.0,0.0,0,0.0
+train,B1_il,52,3.6662,3.4124,0.2539,0.0828,0,0.0
+train,B2_p1_il,52,3.6662,3.4124,0.2539,0.0828,0,0.0
+train,LP_il_aggregate_llf,52,3.4001,3.2536,0.4126,0.0644,0,0.0
+train,LP_il_per_ev_replay,52,3.3689,3.1946,0.4716,0.0726,0,0.0
+train,B1_il_stress,52,3.6604,3.4012,0.265,0.0849,848,0.0
+train,LP_il_aggregate_llf_stress,52,3.4222,3.2898,0.3764,0.0602,778,0.0
+validation,B1_uncontrolled,12,4.0819,4.0819,0.0,0.0,0,0.0
+validation,B1_il,12,4.0819,3.648,0.4338,0.0811,0,0.0
+validation,B2_p1_il,12,4.0819,3.648,0.4338,0.0811,0,0.0
+validation,LP_il_aggregate_llf,12,3.8967,3.6117,0.4702,0.0649,0,0.0
+validation,LP_il_per_ev_replay,12,3.8753,3.539,0.5429,0.0734,0,0.0
+validation,B1_il_stress,12,4.0816,3.6435,0.4384,0.0829,174,0.0
+validation,LP_il_aggregate_llf_stress,12,3.9136,3.6565,0.4253,0.0606,158,0.0
