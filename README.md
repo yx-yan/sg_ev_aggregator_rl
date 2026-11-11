@@ -25,7 +25,8 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 | Public-charger EV session generator calibrated to 5-minute charger occupancy | Done |
 | Charge-only Gymnasium environment, rule baselines and perfect-foresight LP (HiGHS) with replay check | Done |
 | Service-value LP: interruptible load, V2G, regulation and peak shaving (scenario study) | Done |
-| Services inside the environment; MPC baseline | Planned |
+| Interruptible load inside the environment, with LP replay and activation stress test | Done |
+| Demand response; MPC baseline | Planned |
 | RL agents with safety layer | Planned |
 | Dispatch service API | Planned |
 

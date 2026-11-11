@@ -22,6 +22,7 @@ def settle_episode(core) -> dict[str, float]:
     log, ep = core.log, core.ep
     energy = float(np.sum(log.energy_kwh))
     cost = float(np.sum(log.cost_sgd))
+    il = float(np.sum(log.il_revenue_sgd))
     days = ep.n_steps / 48
     return {
         "energy_kwh": energy,
@@ -30,6 +31,11 @@ def settle_episode(core) -> dict[str, float]:
         "cost_per_port_day_sgd": cost / ep.n_ports / days,
         "cost_per_session_sgd": cost / max(len(ep.sessions), 1),
         "peak_kw": float(np.max(log.energy_kwh)) / DT_H,
+        "il_revenue_sgd": il,
+        "il_mw_mean": float(np.mean(log.il_kw)) / 1000,
+        "il_activations": int(np.sum(log.il_activated)),
+        "net_cost_sgd": cost - il,
+        "net_cost_per_port_day_sgd": (cost - il) / ep.n_ports / days,
         "unmet_kwh": float(np.sum(log.unmet_kwh)),
         "unmet_share": float(np.sum(log.unmet_kwh)) / max(float(ep.need_kwh.sum()), 1e-9),
         "sessions": len(ep.sessions),
