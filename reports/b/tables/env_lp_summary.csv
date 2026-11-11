@@ -1,0 +1,11 @@
+split,policy,episodes,cost_per_port_day_sgd,avg_price_sgd_mwh,vs_b1_pct_mean,vs_b1_pct_min,vs_b1_pct_max,peak_kw_mean,unmet_kwh_total
+train,B1_uncontrolled,52,3.666,120.205,0.0,0.0,0.0,376.093,0.0
+train,B2_p0.7,52,3.473,113.84,-4.515,-15.69,-0.996,409.729,0.0
+train,LP_aggregate_llf,52,3.383,110.899,-6.783,-18.837,-2.366,409.464,0.0
+train,LP_aggregate_ratio,52,3.38,110.803,-6.917,-16.7,-2.394,417.458,0.0
+train,LP_per_ev_replay,52,3.336,109.352,-7.982,-20.848,-2.874,442.821,0.0
+validation,B1_uncontrolled,12,4.082,136.708,0.0,0.0,0.0,357.373,0.0
+validation,B2_p0.7,12,3.897,130.46,-4.604,-8.837,-1.296,424.2,0.0
+validation,LP_aggregate_llf,12,3.824,128.004,-6.414,-10.995,-2.321,421.8,0.0
+validation,LP_aggregate_ratio,12,3.818,127.815,-6.56,-11.07,-2.428,428.461,0.0
+validation,LP_per_ev_replay,12,3.773,126.296,-7.697,-12.393,-2.92,440.532,0.0

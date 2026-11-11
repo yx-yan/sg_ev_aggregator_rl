@@ -1,0 +1,48 @@
+{
+  "n_ports": 100,
+  "episode_days": 7,
+  "episodes": 64,
+  "b2_p_chosen_on_validation": "B2_p0.7",
+  "per_ev_replay_max_rel_error": 6.528911609425265e-14,
+  "per_ev_replay_pass_0p5pct": true,
+  "aggregate_replay_gap_vs_lp": {
+    "llf": {
+      "mean_pct": 1.341,
+      "median_pct": 1.156,
+      "max_pct": 3.038,
+      "share_within_0p5pct": 0.016
+    },
+    "ratio": {
+      "mean_pct": 1.205,
+      "median_pct": 1.028,
+      "max_pct": 5.462,
+      "share_within_0p5pct": 0.094
+    }
+  },
+  "unmet_kwh_all_policies": 3.8412942014152295e-07,
+  "lp_solve_100_ports": {
+    "median_s": 0.013435978999950748,
+    "max_s": 0.026087041000209865,
+    "vars_median": 8111,
+    "sessions_median": 947
+  },
+  "lp_solve_1000_ports": {
+    "median_s": 0.14399077050074993,
+    "max_s": 0.17600170799960324,
+    "vars_median": 80428,
+    "sessions_median": 9513
+  },
+  "scale_1000_vs_b1_pct": {
+    "LP_aggregate_llf": -4.377,
+    "LP_per_ev_replay": -5.322
+  },
+  "sessions_per_episode_median": 947,
+  "feasible_at_arrival_note": "soc_target is capped to what the plug-in time allows; see public_charging",
+  "env_config": {
+    "eta_charge": 0.92,
+    "unmet_penalty_sgd_per_kwh": 1.0,
+    "reward_scale_sgd": 10.0,
+    "safety_layer": true,
+    "dispatch_priority": "llf"
+  }
+}

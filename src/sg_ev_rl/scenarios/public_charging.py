@@ -61,6 +61,7 @@ class VehicleAssumptions:
     arrival_soc_dc: tuple[float, float] = (0.1, 0.5)
     target_soc_ac: float = 0.9
     target_soc_dc: float = 0.8
+    eta_charge: float = 0.92  # grid -> battery
 
 
 @dataclass
@@ -188,9 +189,10 @@ def assign_energy(df: pd.DataFrame, rng: np.random.Generator,
                   vehicle: VehicleAssumptions = VehicleAssumptions()) -> pd.DataFrame:
     """Add battery, vehicle power limit, arrival SoC and energy need to plug-in sessions.
 
-    Needs columns current, port_kw, duration_min. Energy need is what the driver would
-    take in the observed plug-in time at full power, capped by the SoC headroom, so every
-    session is feasible on its own.
+    Needs columns current, port_kw, duration_min. Energy need (battery side) is what the
+    driver would take in the observed plug-in time at full power, capped by the SoC
+    headroom, so every session is feasible on its own. `target_feasible` records whether
+    the desired target SoC was reachable; `soc_target` is the target actually requested.
     """
     df = df.copy()
     n = len(df)
@@ -203,8 +205,11 @@ def assign_energy(df: pd.DataFrame, rng: np.random.Generator,
     df["arrival_soc"] = rng.uniform(lo, hi)
     target = np.where(dc, vehicle.target_soc_dc, vehicle.target_soc_ac)
     headroom = np.clip(target - df["arrival_soc"], 0, None) * df["battery_kwh"]
-    deliverable = df["max_kw"] * np.where(dc, vehicle.dc_taper, 1.0) * df["duration_min"] / 60
+    deliverable = (vehicle.eta_charge * df["max_kw"] * np.where(dc, vehicle.dc_taper, 1.0)
+                   * df["duration_min"] / 60)
     df["energy_kwh"] = np.minimum(headroom, deliverable)
+    df["target_feasible"] = headroom <= deliverable
+    df["soc_target"] = df["arrival_soc"] + df["energy_kwh"] / df["battery_kwh"]
     return df
 
 
