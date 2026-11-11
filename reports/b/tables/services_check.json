@@ -11,23 +11,17 @@
     "high": 13
   },
   "sensitivity_weeks": 21,
-  "peak_window_slots": [
-    31,
-    32,
-    33,
-    34
-  ],
   "peak_window_sgt": [
     "15:30",
     "16:00",
     "16:30",
     "17:00"
   ],
-  "base_peak_price_sgd_per_kwh": 0.1,
   "base_v2g_share": 0.5,
   "service_config": {
     "v2g": false,
     "regulation": false,
+    "interruptible_load": false,
     "peak_price_sgd_per_kwh": 0.0,
     "peak_slots": [],
     "eta_charge": 0.92,
@@ -35,9 +29,23 @@
     "deg_cost_sgd_per_kwh": 0.06,
     "soc_min": 0.2,
     "soc_max": 0.95,
-    "activation_ratio": 0.1
+    "activation_ratio": 0.1,
+    "il_activation_h": 0.5
+  },
+  "il_mw_mean": {
+    "S1b_uncontrolled_il": 0.0829,
+    "S6_smart_il": 0.0736
+  },
+  "il_share_of_periods_ge_0p1_mw": {
+    "S1b_uncontrolled_il": 0.349,
+    "S6_smart_il": 0.297
+  },
+  "mean_prices_sgd_mwh": {
+    "usep": 121.63,
+    "regulation": 17.99,
+    "contingency_reserve_A": 13.08
   },
   "simultaneous_charge_discharge_steps": 0,
-  "lp_solve_s_max": 0.1888997499991092,
+  "lp_solve_s_max": 0.2121559579973109,
   "sessions_per_week_median": 947
 }

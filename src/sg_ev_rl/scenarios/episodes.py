@@ -43,6 +43,7 @@ class Episode:
     timestamps: pd.DatetimeIndex  # interval start of each step, SGT
     n_ports: int
     fleet_kw: float  # sum of port ratings: scale for actions and observations
+    contingency_reserve_price: np.ndarray | None = None  # CONRESA, S$/MWh (load facilities are group A)
 
     @property
     def p_max(self) -> np.ndarray:
@@ -138,7 +139,8 @@ def episode_from_sessions(s: pd.DataFrame, market: pd.DataFrame, start: date, n_
     m = m.loc[steps]
     return Episode(scenario_id, start, n_steps, s, avail, m["usep_price"].to_numpy(float),
                    m["regulation_price"].to_numpy(float), m["demand_gross_mw"].to_numpy(float),
-                   m["usep_price_pct_336"].to_numpy(float), steps, n_ports, fleet_kw)
+                   m["usep_price_pct_336"].to_numpy(float), steps, n_ports, fleet_kw,
+                   m["reserve_price_CONRESA"].to_numpy(float))
 
 
 def _fleet_kw(profile: pc.PublicChargingProfile, portfolio) -> float:
