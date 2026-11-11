@@ -24,7 +24,7 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 | Literature survey of comparable EV aggregator RL papers | Done |
 | Public-charger EV session generator calibrated to 5-minute charger occupancy | Done |
 | Charge-only Gymnasium environment, rule baselines and perfect-foresight LP (HiGHS) with replay check | Done |
-| Service-value LP: V2G, regulation capacity and peak shaving (scenario study) | Done |
+| Service-value LP: interruptible load, V2G, regulation and peak shaving (scenario study) | Done |
 | Services inside the environment; MPC baseline | Planned |
 | RL agents with safety layer | Planned |
 | Dispatch service API | Planned |
@@ -36,7 +36,7 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 - **Regulation capacity is the larger revenue stream** (scenario estimate about S$440–550 per vehicle per year), and regulation prices did not follow the energy price rise.
 - **Public charging sessions can be generated from occupancy data alone.** Calibrated on two weeks of 5-minute port status (11,880 public ports) and checked on six other weeks, the generator matches the observed session count within 0.3%, half-hourly occupancy within 0.6 percentage points on average, and plug-in durations with a KS statistic of at most 0.05. Battery size and state of charge are assumptions.
 - **Smart charging alone saves little at public chargers, and an aggregate action costs about 1% more.** For 100 public ports, charge only, the perfect-foresight LP cuts the 2025 energy bill by 8% against uncontrolled charging (a price-threshold rule gets 4.5%). Replaying the LP's fleet profile through least-laxity-first dispatch meets every departure target but costs 1.3% more than the per-EV LP, which bounds what an aggregate-action agent can reach.
-- **Regulation capacity is the service worth keeping; V2G pays mainly through it.** In a perfect-foresight scenario study over 65 weeks, regulation adds about S$0.21 per port per day on top of smart charging in normal weeks, V2G arbitrage alone adds S$0.02, and V2G on top of regulation adds S$0.14 (S$0.42 in price-spike weeks). Regulation eligibility for EV aggregations in Singapore is not yet confirmed.
+- **Interruptible load is the service open to EV aggregations today, and it pays about as much as smart charging.** Singapore has no framework yet for aggregated loads to provide regulation (only a VPP sandbox), but loads may offer interruptible load at the contingency reserve price, and EV charging stations are now eligible for demand response. In a perfect-foresight scenario study over 65 weeks, smart charging plus interruptible load saves S$0.51 per port per day against uncontrolled charging (smart charging alone S$0.34; regulation with V2G, a future scenario, S$0.74). Sources are in [`reports/b/2026-11-11_sg_service_eligibility.md`](reports/b/2026-11-11_sg_service_eligibility.md).
 
 Details, figures and tables are in [`reports/b/`](reports/b/) and [`reports/c/`](reports/c/); the write-ups are in Chinese.
 

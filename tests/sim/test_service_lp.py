@@ -71,3 +71,30 @@ def test_peak_price_shifts_load_out_of_window(ep):
     base = solve_service_lp(ep, ServiceConfig(v2g=True))
     peak = solve_service_lp(ep, ServiceConfig(v2g=True, peak_price_sgd_per_kwh=1.0, peak_slots=PEAK))
     assert peak.net_kw[win].sum() <= base.net_kw[win].sum() + 1e-6
+
+
+def test_interruptible_load_offers_are_backed_by_charging(ep):
+    cfg = ServiceConfig(interruptible_load=True)
+    res = solve_service_lp(ep, cfg)
+    assert res.il_revenue_sgd > 0
+    assert res.total_cost_sgd <= solve_service_lp(ep).total_cost_sgd + 1e-6
+    # only load being drawn is offered
+    assert np.all(res.il_kw * DT_H <= res.charge + 1e-6)
+    # an activation of il_activation_h hours could be made up before departure
+    cap = ep.p_max[:, None] * ep.avail * DT_H
+    spare_after = np.cumsum((cap - res.charge)[:, ::-1], axis=1)[:, ::-1] - (cap - res.charge)
+    assert np.all(res.il_kw * cfg.il_activation_h <= spare_after + 1e-5)
+
+
+def test_interruptible_load_on_a_pinned_schedule(ep):
+    from sg_ev_rl.scheduling import fleet_rules as R
+
+    core = R.run(ep, R.Uncontrolled())
+    res = solve_service_lp(ep, ServiceConfig(interruptible_load=True), fixed_charge=core.schedule)
+    assert np.allclose(res.charge, core.schedule, atol=1e-6)
+    assert res.il_revenue_sgd >= 0
+
+
+def test_interruptible_load_needs_charge_only(ep):
+    with pytest.raises(NotImplementedError):
+        solve_service_lp(ep, ServiceConfig(interruptible_load=True, v2g=True))

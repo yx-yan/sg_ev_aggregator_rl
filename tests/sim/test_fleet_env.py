@@ -23,6 +23,7 @@ def fake_market(days=3, seed=0):
     hours = np.asarray(steps.hour + steps.minute / 60)
     usep = 120 + 40 * np.sin((hours - 9) / 24 * 2 * np.pi) + rng.normal(0, 15, len(steps))
     return pd.DataFrame({"interval_start": steps, "usep_price": usep, "regulation_price": 10.0,
+                         "reserve_price_CONRESA": 12.0,
                          "demand_gross_mw": 6000.0, "usep_price_pct_336": rng.uniform(0, 1, len(steps))})
 
 
