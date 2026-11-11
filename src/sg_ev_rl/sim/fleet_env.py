@@ -134,7 +134,8 @@ class FleetCore:
 
 
 class FleetEnv(gym.Env):
-    """Aggregate action a = (u, b) in [-1, 1] x [0, 1]; b = share of the backable interruptible load offered.
+    """Aggregate action a = (u, v) in [-1, 1]^2; b = (v + 1) / 2 is the share of the backable interruptible
+    load offered (symmetric bounds, as Stable-Baselines3 recommends; v = 0 offers half).
 
     action_mode "absolute": fleet setpoint P = u * fleet_kw, projected onto the envelope (charge only, so
     u < 0 means "as little as allowed"). "envelope": E = E_min + (u + 1) / 2 * (E_max - E_min), so the whole
@@ -146,7 +147,7 @@ class FleetEnv(gym.Env):
     def __init__(self, episodes, cfg: EnvConfig = EnvConfig()):
         """`episodes`: a list of Episode, or a callable rng -> Episode."""
         self.episodes, self.cfg = episodes, cfg
-        self.action_space = gym.spaces.Box(np.array([-1.0, 0.0], np.float32), np.array([1.0, 1.0], np.float32))
+        self.action_space = gym.spaces.Box(-1.0, 1.0, (2,), np.float32)
         self.observation_space = gym.spaces.Box(-OBS_CLIP, OBS_CLIP, (OBS_DIM,), np.float32)
         self.core: FleetCore | None = None
 
@@ -171,7 +172,7 @@ class FleetEnv(gym.Env):
             energy = max(u, 0.0) * core.ep.fleet_kw * DT_H
         else:
             raise ValueError(f"unknown action_mode {self.cfg.action_mode!r}")
-        info = core.step_energy(energy, float(action[1]))
+        info = core.step_energy(energy, (float(np.clip(action[1], -1, 1)) + 1) / 2)
         penalty = self.cfg.unmet_penalty_sgd_per_kwh * info["unmet_kwh"]
         reward = -(info["cost_sgd"] - info["il_revenue_sgd"] + penalty) / self.cfg.reward_scale_sgd
         terminated = core.done

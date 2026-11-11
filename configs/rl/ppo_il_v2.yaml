@@ -1,0 +1,23 @@
+# v2: symmetric IL action, reward normalisation, 3M steps (v1 learned IL offers too slowly).
+n_ports: 300
+episode_days: 7
+total_timesteps: 3000000
+n_envs: 8
+eval_every_steps: 50000      # summed over all envs
+seeds: [0, 1, 2]
+env:
+  action_mode: envelope
+  reward_scale_sgd: 20.0     # about one step's net cost for 300 ports
+  unmet_penalty_sgd_per_kwh: 1.0
+  il_activation_h: 0.5
+  il_activation_prob: 0.0
+ppo:
+  learning_rate: 0.0003
+  n_steps: 2048              # per env
+  batch_size: 512
+  n_epochs: 10
+  gamma: 0.995               # 336-step episodes; charging now vs later is a long-horizon trade-off
+  gae_lambda: 0.95
+  ent_coef: 0.0
+  net_arch: [128, 128]
+norm_reward: true

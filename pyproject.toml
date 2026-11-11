@@ -19,6 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.6", "pre-commit>=3"]
+rl = ["stable-baselines3>=2.3"]  # pulls in PyTorch; only needed to train or load agents
 
 [tool.setuptools.packages.find]
 where = ["src"]
