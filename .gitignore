@@ -224,3 +224,6 @@ __marimo__/
 *.tar
 *.tar.gz
 *.json.gz
+
+# Models, logs and caches from training runs
+/runs/

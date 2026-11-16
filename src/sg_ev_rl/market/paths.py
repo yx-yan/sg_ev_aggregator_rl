@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 
 DEFAULT_RESEARCH_ROOT = "/Users/yyx/Library/CloudStorage/OneDrive-NanyangTechnologicalUniversity/Research"
-DEFAULT_RUNS_DIR = "/Users/yyx/Documents/GitHub/sg_ev_aggregator_rl_runs/c"
+# Run outputs stay in the repo but out of Git (see .gitignore)
+DEFAULT_RUNS_DIR = Path(__file__).resolve().parents[3] / "runs" / "c"
 
 
 def research_root() -> Path:
