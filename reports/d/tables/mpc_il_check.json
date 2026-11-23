@@ -1,0 +1,126 @@
+{
+  "n_ports": 300,
+  "episode_days": 7,
+  "timing": {
+    "validation": {
+      "B4_mpc_perfect_aggregate": {
+        "wall_s": 37.087515956999596,
+        "solves": 4032,
+        "max_evs": 105,
+        "max_steps": 97
+      },
+      "B4_mpc_perfect_per_ev": {
+        "wall_s": 35.393564834000244,
+        "solves": 4032,
+        "max_evs": 105,
+        "max_steps": 97
+      },
+      "B4_mpc_last_day_aggregate": {
+        "wall_s": 37.63498533399979,
+        "solves": 4032,
+        "max_evs": 105,
+        "max_steps": 97
+      },
+      "B4_mpc_last_day_per_ev": {
+        "wall_s": 38.826957790999586,
+        "solves": 4032,
+        "max_evs": 106,
+        "max_steps": 97
+      },
+      "B4_mpc_last_week_aggregate": {
+        "wall_s": 40.55495129399969,
+        "solves": 4032,
+        "max_evs": 112,
+        "max_steps": 97
+      },
+      "B4_mpc_last_week_per_ev": {
+        "wall_s": 37.43254045999856,
+        "solves": 4032,
+        "max_evs": 112,
+        "max_steps": 97
+      },
+      "B4_mpc_profile7_aggregate": {
+        "wall_s": 42.84432329000174,
+        "solves": 4032,
+        "max_evs": 109,
+        "max_steps": 97
+      },
+      "B4_mpc_profile7_per_ev": {
+        "wall_s": 39.02287458599949,
+        "solves": 4032,
+        "max_evs": 109,
+        "max_steps": 97
+      }
+    },
+    "train_sample": {
+      "B4_mpc_perfect_aggregate": {
+        "wall_s": 23.33279295900047,
+        "solves": 2688,
+        "max_evs": 120,
+        "max_steps": 91
+      },
+      "B4_mpc_perfect_per_ev": {
+        "wall_s": 22.79667866699765,
+        "solves": 2688,
+        "max_evs": 121,
+        "max_steps": 91
+      },
+      "B4_mpc_last_day_aggregate": {
+        "wall_s": 24.287492166000447,
+        "solves": 2688,
+        "max_evs": 117,
+        "max_steps": 91
+      },
+      "B4_mpc_last_day_per_ev": {
+        "wall_s": 24.216413750001266,
+        "solves": 2688,
+        "max_evs": 119,
+        "max_steps": 91
+      },
+      "B4_mpc_last_week_aggregate": {
+        "wall_s": 24.84890925000218,
+        "solves": 2688,
+        "max_evs": 119,
+        "max_steps": 91
+      },
+      "B4_mpc_last_week_per_ev": {
+        "wall_s": 23.460533835001115,
+        "solves": 2688,
+        "max_evs": 119,
+        "max_steps": 91
+      },
+      "B4_mpc_profile7_aggregate": {
+        "wall_s": 25.892753625002115,
+        "solves": 2688,
+        "max_evs": 117,
+        "max_steps": 91
+      },
+      "B4_mpc_profile7_per_ev": {
+        "wall_s": 26.985309998999583,
+        "solves": 2688,
+        "max_evs": 117,
+        "max_steps": 91
+      }
+    }
+  },
+  "same_episodes_as_ppo": {
+    "validation": true,
+    "train_sample": true
+  },
+  "forecast_mae_48_steps_validation": {
+    "usep_price_mae_last_day": 25.914,
+    "usep_price_mae_last_week": 30.03,
+    "usep_price_mae_profile7": 24.089,
+    "reserve_price_CONRESA_mae_last_day": 16.496,
+    "reserve_price_CONRESA_mae_last_week": 18.37,
+    "reserve_price_CONRESA_mae_profile7": 16.272
+  },
+  "forecast_mae_48_steps_train_sample": {
+    "usep_price_mae_last_day": 19.15,
+    "usep_price_mae_last_week": 21.383,
+    "usep_price_mae_profile7": 17.661,
+    "reserve_price_CONRESA_mae_last_day": 5.854,
+    "reserve_price_CONRESA_mae_last_week": 6.288,
+    "reserve_price_CONRESA_mae_profile7": 5.291
+  }
+}
