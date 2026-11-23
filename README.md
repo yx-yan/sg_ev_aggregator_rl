@@ -26,9 +26,10 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 | Charge-only Gymnasium environment, rule baselines and perfect-foresight LP (HiGHS) with replay check | Done |
 | Service-value LP: interruptible load, V2G, regulation and peak shaving (scenario study) | Done |
 | Interruptible load inside the environment, with LP replay and activation stress test | Done |
-| Demand response; MPC baseline | Planned |
+| Rolling MPC baseline (B4) with past-price forecasts | Done |
+| Demand response | Planned |
 | PPO agent (Stable-Baselines3) with safety layer on smart charging + interruptible load | First results |
-| Distribution-shift fix, rolling MPC, test-period evaluation | Planned |
+| Distribution-shift fix, test-period evaluation | Planned |
 | Dispatch service API | Planned |
 
 ## Findings so far
@@ -40,6 +41,7 @@ An EV aggregator schedules fleet charging and discharging to balance electricity
 - **Smart charging alone saves little at public chargers, and an aggregate action costs about 1% more.** For 100 public ports, charge only, the perfect-foresight LP cuts the 2025 energy bill by 8% against uncontrolled charging (a price-threshold rule gets 4.5%). Replaying the LP's fleet profile through least-laxity-first dispatch meets every departure target but costs 1.3% more than the per-EV LP, which bounds what an aggregate-action agent can reach.
 - **Interruptible load is the service open to EV aggregations today, and it pays about as much as smart charging.** Singapore has no framework yet for aggregated loads to provide regulation (only a VPP sandbox), but loads may offer interruptible load at the contingency reserve price, and EV charging stations are now eligible for demand response. In a perfect-foresight scenario study over 65 weeks, smart charging plus interruptible load saves S$0.51 per port per day against uncontrolled charging (smart charging alone S$0.34; regulation with V2G, a future scenario, S$0.74). Sources are in [`reports/b/2026-11-11_sg_service_eligibility.md`](reports/b/2026-11-11_sg_service_eligibility.md).
 - **PPO beats the rules on training weeks but not on validation, because reserve prices shifted.** On 300 public ports, PPO closes 36% of the gap between the best rule and the LP bound on 2025 weeks, and is the only controller that lowers the fleet peak (by 6%). On the 2026 Q1 validation weeks contingency reserve prices are 1.6 times the 2025 level, so offering maximum interruptible load without shifting wins (S$3.70 vs PPO S$3.75 net per port per day). Scale-free price features and price-level randomisation did not fix this (S$3.74–3.77), and PPO trained on 2025 still beats the rules when 2025 reserve prices are doubled: the 2026 Q1 loss comes from a change in the daily price shape, not the level.
+- **A rolling MPC with a naive price forecast matches the best rule on validation and beats PPO there, but PPO beats it on training weeks.** Re-solving the LP every step with the 7-day same-slot average as the price forecast costs S$3.70 per port per day on 2026 Q1 (uncontrolled + IL S$3.70, PPO S$3.75) and S$3.16 on 2025 weeks (PPO S$3.13). Forecast error costs about S$0.09–0.11 per port per day, four to five times what the aggregate action costs (S$0.02). The closed-loop MPC with perfect prices is a tighter bound for aggregate-action agents than the open-loop LP replay; against it PPO closes 27% of the rule-to-bound gap on training weeks, not 36%.
 
 Details, figures and tables are in [`reports/b/`](reports/b/), [`reports/c/`](reports/c/) and [`reports/d/`](reports/d/); the write-ups are in Chinese.
 
